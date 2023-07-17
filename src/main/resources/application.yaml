@@ -1,0 +1,18 @@
+server:
+  port: 9002
+  shutdown: graceful
+  netty:
+    connection-timeout: 2s
+    idle-timeout: 15s
+
+spring:
+  application:
+    name: Order service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/product_orders
+
+store:
+  catalog-service-uri: http://localhost:9001
