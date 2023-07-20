@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.1'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.eclipse.jkube.kubernetes' version '1.13.1'
 }
 
 group = 'com.asr'
@@ -44,4 +45,29 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+kubernetes {
+    image {
+        name = "anuragrajawat/${project.name}:${project.version}"
+    }
+
+    resources {
+        controller {
+            env {
+                SPRING_DATA_MONGODB_URI = 'mongodb://store-mongo:27017/product_orders'
+            }
+        }
+
+        services = [{
+                        name = "${project.name}"
+                        headless = "false"
+                        type = "ClusterIP"
+                        ports = [{
+                                     protocol = "tcp"
+                                     port = "80"
+                                     targetPort = "9002"
+                                 }]
+                    }]
+    }
 }
